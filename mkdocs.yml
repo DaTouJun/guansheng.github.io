@@ -1,0 +1,5 @@
+site_name: GuanSheng的个人网站
+site_url: https://guansheng.github.io/mymkdocs/
+site_author: GuanSheng
+theme:
+  name: material
