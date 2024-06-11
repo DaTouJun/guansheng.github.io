@@ -5,3 +5,7 @@ theme:
   name: material
 plugins:
   - search
+
+markdown_extensions:
+  - toc:
+      slugify: !!python/name:pymdownx.slugs.uslugify
