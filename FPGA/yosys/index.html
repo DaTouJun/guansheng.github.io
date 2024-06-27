@@ -1,0 +1,1017 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="GuanSheng">
+      
+      
+        <link rel="canonical" href="https://guansheng.github.io/mymkdocs/FPGA/yosys/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../%E5%87%A0%E7%A7%8Dverilog%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7%E7%9B%98%E7%82%B9/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Yosys 简单上手 - GuanSheng的个人网站</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-7PTMCYKC09"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-7PTMCYKC09",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-7PTMCYKC09",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#yosys-简单上手" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="GuanSheng的个人网站" class="md-header__button md-logo" aria-label="GuanSheng的个人网站" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GuanSheng的个人网站
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Yosys 简单上手
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="GuanSheng的个人网站" class="md-nav__button md-logo" aria-label="GuanSheng的个人网站" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    GuanSheng的个人网站
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    欢迎来到GuanSheng的个人网站
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    FPGA
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            FPGA
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Yosys 简单上手
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Yosys 简单上手
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1简单使用" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.简单使用
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2介绍官方demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.介绍官方Demo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.介绍官方Demo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#20-官方示例代码" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0 官方示例代码
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-加载设计" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 加载设计
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-解析展开elaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 解析展开(Elaboration)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 解析展开(Elaboration)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#begin段落" class="md-nav__link">
+    <span class="md-ellipsis">
+      begin段落
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#221-addr_gen模块" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.1 addr_gen模块
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.1 addr_gen模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#执行指令" class="md-nav__link">
+    <span class="md-ellipsis">
+      执行指令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指令执行结果" class="md-nav__link">
+    <span class="md-ellipsis">
+      指令执行结果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#查看网表图" class="md-nav__link">
+    <span class="md-ellipsis">
+      查看网表图
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#命令输出" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令输出
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#将proc展开-并且不开启优化" class="md-nav__link">
+    <span class="md-ellipsis">
+      将proc展开 并且不开启优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指令执行结果-这里的序号可能与你的并不相同" class="md-nav__link">
+    <span class="md-ellipsis">
+      指令执行结果 这里的序号可能与你的并不相同
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#清理和优化表示" class="md-nav__link">
+    <span class="md-ellipsis">
+      清理和优化表示
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-整个" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 整个
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%87%A0%E7%A7%8Dverilog%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7%E7%9B%98%E7%82%B9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    几种verilog仿真工具盘点
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1简单使用" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.简单使用
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2介绍官方demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.介绍官方Demo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.介绍官方Demo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#20-官方示例代码" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.0 官方示例代码
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-加载设计" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 加载设计
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-解析展开elaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 解析展开(Elaboration)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 解析展开(Elaboration)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#begin段落" class="md-nav__link">
+    <span class="md-ellipsis">
+      begin段落
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#221-addr_gen模块" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.1 addr_gen模块
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.1 addr_gen模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#执行指令" class="md-nav__link">
+    <span class="md-ellipsis">
+      执行指令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指令执行结果" class="md-nav__link">
+    <span class="md-ellipsis">
+      指令执行结果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#查看网表图" class="md-nav__link">
+    <span class="md-ellipsis">
+      查看网表图
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#命令输出" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令输出
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#将proc展开-并且不开启优化" class="md-nav__link">
+    <span class="md-ellipsis">
+      将proc展开 并且不开启优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#指令执行结果-这里的序号可能与你的并不相同" class="md-nav__link">
+    <span class="md-ellipsis">
+      指令执行结果 这里的序号可能与你的并不相同
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#清理和优化表示" class="md-nav__link">
+    <span class="md-ellipsis">
+      清理和优化表示
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-整个" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 整个
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="yosys-简单上手">Yosys 简单上手</h1>
+<p>开源综合工具</p>
+<h2 id="1简单使用">1.简单使用</h2>
+<p><a href="https://yosyshq.readthedocs.io/projects/yosys/en/latest/getting_started/example_synth.html#flattening">参考链接(yosys官方文档)</a></p>
+<p>安装好后输入yosys进入交互界面，对于命令，可以使用<kbd>Tab</kbd>键进行补全。</p>
+<pre><code class="language-bash">yosys&gt; 
+</code></pre>
+<p>加载verilog文件</p>
+<pre><code class="language-bash">read_verilog &lt;filename&gt;
+</code></pre>
+<p>hierarchy命令，处理和层次结构相关的问题
+如果使用了hierarchy命令制定了top，会自动发现找到使用的子模块，如果某个模块没有使用会自动删除，这时如果尝试使用read_verilog命令加载，但是重复加载了会报错退出。</p>
+<p>给出检查层次结构和指定top的命令:</p>
+<pre><code class="language-bash">hierarchy -check -top &lt;top&gt;
+</code></pre>
+<p>可以使用show来查看节点图
+例如:</p>
+<pre><code class="language-verilog">// demo1.v
+module demo1(
+    input a,
+    input b,
+    output c
+);
+
+wire med;
+assign med = a ^ b ;
+assign c = ~med;
+
+endmodule
+</code></pre>
+<p>在终端中</p>
+<pre><code class="language-bash">yosys demo1.v
+hierarchy -check -top demo1
+show demo1
+</code></pre>
+<p>可以看到如下的网表图
+<img alt="alt 网表图" src="../image/netlist.png" /></p>
+<p>进行优化</p>
+<pre><code class="language-bash">opt_clean
+</code></pre>
+<p>输出如下：</p>
+<pre><code class="language-bash">8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \demo1..
+Removed 0 unused cells and 2 unused wires.
+&lt;suppressed ~1 debug messages&gt;
+</code></pre>
+<p>可以看到消除了两条没用到的连线
+网表图如下：
+<img alt="alt 第二张网表图" src="../image/netlist2.png" /></p>
+<h2 id="2介绍官方demo">2.介绍官方Demo</h2>
+<p>文档链接见上参考链接。</p>
+<p>这是一个在ice40 FPGA平台上创作的教程，但是指令和脚本很多都是通用的，因此无论是哪种架构，都可以学习调用的命令和他们所作的操作。</p>
+<p>这里给出一个示例设计，用于接下来我们的操作</p>
+<h3 id="20-官方示例代码">2.0 官方示例代码</h3>
+<pre><code class="language-verilog">// 地址生成器/计数器
+module addr_gen 
+#(  parameter MAX_DATA=256,
+    localparam AWIDTH = $clog2(MAX_DATA)
+) ( input en, clk, rst,
+    output reg [AWIDTH-1:0] addr
+);
+    initial addr &lt;= 0;
+
+    // 异步复位
+    // 如果使能就增加地址
+    always @(posedge clk or posedge rst)
+        if (rst)
+            addr &lt;= 0;
+        else if (en) begin
+            if (addr == MAX_DATA-1)
+                addr &lt;= 0;
+            else
+                addr &lt;= addr + 1;
+        end
+endmodule //addr_gen
+
+// 定义了顶层的fifo实体
+module fifo 
+#(  parameter MAX_DATA=256,
+    localparam AWIDTH = $clog2(MAX_DATA)
+) ( input wen, ren, clk, rst,
+    input [7:0] wdata,
+    output reg [7:0] rdata,
+    output reg [AWIDTH:0] count
+);
+    // fifo storage
+    // sync read before write
+    wire [AWIDTH-1:0] waddr, raddr;
+    reg [7:0] data [MAX_DATA-1:0];
+    always @(posedge clk) begin
+        if (wen)
+            data[waddr] &lt;= wdata;
+        rdata &lt;= data[raddr];
+    end // storage
+
+    // addr_gen for both write and read addresses
+    addr_gen #(.MAX_DATA(MAX_DATA))
+    fifo_writer (
+        .en     (wen),
+        .clk    (clk),
+        .rst    (rst),
+        .addr   (waddr)
+    );
+
+    addr_gen #(.MAX_DATA(MAX_DATA))
+    fifo_reader (
+        .en     (ren),
+        .clk    (clk),
+        .rst    (rst),
+        .addr   (raddr)
+    );
+
+    // status signals
+    initial count &lt;= 0;
+
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            count &lt;= 0;
+        else if (wen &amp;&amp; !ren)
+            count &lt;= count + 1;
+        else if (ren &amp;&amp; !wen)
+            count &lt;= count - 1;
+    end
+
+endmodule
+
+</code></pre>
+<h3 id="21-加载设计">2.1 加载设计</h3>
+<p>首先还是要先加载设计</p>
+<pre><code class="language-sh">yosys fifo.v
+</code></pre>
+<p>可以查看到结果为</p>
+<pre><code class="language-sh-output">
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2024  Claire Xenia Wolf &lt;claire@yosyshq.com&gt;         |
+ |  Distributed under an ISC-like license, type &quot;license&quot; to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.40+50 (git sha1 0f9ee20ea, clang++ 17.0.6 -fPIC -Os)
+
+-- Parsing `fifo.v' using frontend ` -vlog2k' --
+
+1. Executing Verilog-2005 frontend: fifo.v
+Parsing Verilog input from `fifo.v' to AST representation.
+Storing AST representation for module `$abstract\addr_gen'.
+Storing AST representation for module `$abstract\fifo'.
+Successfully finished Verilog frontend.
+</code></pre>
+<p>已经将其转换为了AST树也就是抽象语法树</p>
+<h3 id="22-解析展开elaboration">2.2 解析展开(Elaboration)</h3>
+<p>我们已经进入了交互式终端，可以直接调用Yosys的命令<br />
+我们的目的是调用<code>synth_ice40 -top fifo</code>不过我们来单独调用各个命令来学习每个部分是如何进行整个工作流的<br />
+我们将从简单的部分也就是<code>addr_gen</code>开始</p>
+<p>使用<code>help synth_ice40</code>可以查看这条指令由许多指令组合而成<br />
+我们先从标注为<code>begin</code>的段落开始</p>
+<h5 id="begin段落"><code>begin</code>段落</h5>
+<pre><code class="language-sh">read_verilog -D ICE40_HX -lib -specify +/ice40/cells_sim.v
+hierarchy -check -top &lt;top&gt;
+proc
+</code></pre>
+<p>第一句加载了ice40的单元模型，使我们能够导入平台特定的IP<br />
+例如PLL，在我们使用的时候可能需要使用<code>SB_PLL40_CORE</code>而不是在综合映射阶段采才去使用。<br />
+不过我们的设计也没有使用任何IP块，因此可以跳过这句指令。但是在后续的映射阶段仍然需要导入。</p>
+<blockquote>
+<p>提示<br />
++/是一个对Yosys的share目录的动态引用，一般是<code>/usr/local/share/yosys</code></p>
+</blockquote>
+<h4 id="221-addr_gen模块">2.2.1 addr_gen模块</h4>
+<p>我们先从<code>addr_gen</code>模块开始，从<code>hierarchy -top addr_gen</code>这条指令开始  </p>
+<p>其中addr_gen的代码<a href="#20-官方示例代码">见上</a></p>
+<blockquote>
+<p>提示
+<code>hierarchy</code>应该总是在加载完设计的第一条指令。通过指定顶层模块，<code>hierarchy</code>同时为他设定<code>(* top *)</code>这个参数。使得其他的指令能知道哪一个模块是top模块</p>
+</blockquote>
+<h5 id="执行指令">执行指令</h5>
+<pre><code class="language-sh">hierarchy -top addr_gen
+</code></pre>
+<h5 id="指令执行结果">指令执行结果</h5>
+<pre><code class="language-sh">2. Executing HIERARCHY pass (managing design hierarchy).
+
+3. Executing AST frontend in derive mode using pre-parsed AST for module `\addr_gen'.   
+Generating RTLIL representation for module `\addr_gen'.
+
+3.1. Analyzing design hierarchy..
+Top module:  \addr_gen
+
+3.2. Analyzing design hierarchy..
+Top module:  \addr_gen
+Removing unused module `$abstract\fifo'.
+Removing unused module `$abstract\addr_gen'.
+Removed 2 unused modules.
+</code></pre>
+<p>并且你可以用以下的指令查看网表图</p>
+<h5 id="查看网表图">查看网表图</h5>
+<pre><code class="language-sh">show addr_gen
+</code></pre>
+<h5 id="命令输出">命令输出</h5>
+<pre><code class="language-sh">4. Generating Graphviz representation of design.
+Writing dot description to `/home/datou/.yosys_show.dot'.
+Dumping module addr_gen to page 1.
+Exec: { test -f '/home/datou/.yosys_show.dot.pid' &amp;&amp; fuser -s '/home/datou/.yosys_show.dot.pid' 2&gt; /dev/null; } || ( echo $$ &gt;&amp;3; exec xdot '/home/datou/.yosys_show.dot'; ) 3&gt; '/home/datou/.yosys_show.dot.pid' &amp;
+</code></pre>
+<p>并且有下面的窗口弹出
+<img alt="alt addr_gen的网表图" src="../image/addr_gen_netimage.png" /></p>
+<p>可以看到简单的操作例如<code>addr + 1</code>以及<code>addr == MAX_DATA-1</code>可以直接从我们的<a href="#20-官方示例代码">源代码</a>的<code>always</code>块中被提取出来。其中有<code>$add</code>和<code>$eq</code>这些能够看到的元素。但是我们可以看到一些逻辑和内存元素不是很直观。这些部分被放到了<code>进程(processes)</code>中，例途中的符号<code>PROC</code>。注意的是其中的第二行指出了对应在<code>always</code>块中的开始和结束行数。对于<code>initial</code>块，我们可以看到<code>PROC</code>块的行数为0。</p>
+<p>为了处理他们，要介绍下一个命令<code>proc</code>——将进程转换为网表。<code>proc</code>也是一个宏命令就像<code>synth_ice40</code>一样。不同于直接修改设计，我们将一个一个调用命令。对于<code>proc</code>命令，这些子命令将行为逻辑转换为多路复用器和寄存器。我们看看如果调用后会发生什么。不过现在，我们去调用<code>proc -noopt</code>来避免一些普遍的自动优化。</p>
+<h5 id="将proc展开-并且不开启优化">将proc展开 并且不开启优化</h5>
+<pre><code class="language-sh">proc -noopt
+</code></pre>
+<h5 id="指令执行结果-这里的序号可能与你的并不相同">指令执行结果 这里的序号可能与你的并不相同</h5>
+<pre><code class="language-sh">14. Executing PROC pass (convert processes to netlists).
+
+14.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+14.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$fifo.v:12$1 in module addr_gen.     
+Removed a total of 0 dead cases.
+
+14.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 1 assignment to connection.
+
+14.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\addr_gen.$proc$fifo.v:0$4'.
+  Set init value: \addr = 8'00000000
+
+14.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst in `\addr_gen.$proc$fifo.v:12$1'.
+
+14.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+&lt;suppressed ~2 debug messages&gt;
+
+14.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\addr_gen.$proc$fifo.v:0$4'.
+Creating decoders for process `\addr_gen.$proc$fifo.v:12$1'.
+     1/1: $0\addr[7:0]
+
+14.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+14.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\addr_gen.\addr' using process `\addr_gen.$proc$fifo.v:12$1'.
+  created $adff cell `$procdff$10' with positive edge clock and positive level reset.   
+
+14.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+14.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `addr_gen.$proc$fifo.v:0$4'.
+Found and cleaned up 2 empty switches in `\addr_gen.$proc$fifo.v:12$1'.
+Removing empty process `addr_gen.$proc$fifo.v:12$1'.
+Cleaned up 2 empty switches.
+</code></pre>
+<p>可以看到，依次执行了多个不同的PASS来完成<code>proc</code>操作，结果图如下
+<img alt="alt 执行proc的结果" src="../image/addr_gen_afterproc.png" /></p>
+<p>可以看到由<code>always @</code>块出现了一些新的单元，同时寄存器使用了<code>$adff</code>块来实现。如果我们查看终端的输出可以看到不同的<code>proc_*</code>操作被调用，我们可以从<a href="https://yosyshq.readthedocs.io/projects/yosys/en/latest/using_yosys/synthesis/proc.html">这里</a>查看更多信息。</p>
+<p>可以注意到的是，在执行完<code>proc</code>指令之后出现了浮动的导线，是由<code>initial</code>语句向<code>addr</code>置零而来的。然而，<code>initial</code>语句是不可综合的，因此在生成物理硬件之前必须被清除。我们现在可以调用<code>clean</code>，同时也调用在执行<code>proc</code>之后都应该调用的<code>opt_expr</code>。我们可以使用在同一行使用分号隔开来同时执行。</p>
+<h5 id="清理和优化表示">清理和优化表示</h5>
+<pre><code class="language-sh">opt_expr; clean
+</code></pre>
+<p>结果如图所示
+<img alt="alt 清理后" src="../image/addr_gen_aflter_clean.png" /></p>
+<p>你可能注意到的是，<code>$eq</code>的输入从255转换为了二进制表示<code>8b11111111</code>，常量从被表示为了<code>&lt;bid_width&gt;'&lt;bits&gt;</code>这样的形式，转换为了二进制的bit量而不是使用十进制数字，同时也说明了从32bit的数转化为了8bit宽度的数字。这是一个由运行<code>opt_expr</code>带来的副作用。他带来了常量折叠和简单的表达式重写。对于更多的详细信息，可以参照<a href="https://yosyshq.readthedocs.io/projects/yosys/en/latest/using_yosys/synthesis/opt.html">优化pass-官方</a>和<a href="https://yosyshq.readthedocs.io/projects/yosys/en/latest/using_yosys/synthesis/opt.html#adv-opt-expr">opt_expr的段</a></p>
+<blockquote>
+<p>提示
+clean——清除没用过的单元和连线，可以在任何命令后通过两个分号调用，例如上面的<code>opt_expr; clean</code>可以简答的使用<code>opt_expr ;;</code>来进行调用。这能够帮你快速的去除不需要未连接的部分，这能帮下一步减少运算要求。</p>
+<h4 id="222-整个">2.2.2 整个</h4>
+</blockquote>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>
