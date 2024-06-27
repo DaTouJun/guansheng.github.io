@@ -9,3 +9,8 @@ plugins:
 markdown_extensions:
   - toc:
       slugify: !!python/name:pymdownx.slugs.uslugify
+
+extra:
+  analytics:
+    provider: google
+    property: G-7PTMCYKC09
